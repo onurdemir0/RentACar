@@ -4,6 +4,7 @@ using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleUI
 {
@@ -27,7 +28,7 @@ namespace ConsoleUI
 			foreach (Color color in colors)
 			{
 				colorManager.Add(color);
-			}*/
+			}
 
 			List<Car> cars = new List<Car>
 			{
@@ -40,20 +41,99 @@ namespace ConsoleUI
 			foreach (Car car in cars)
 			{
 				carManager.Add(car);
+			}*/
+			//carManager.Update(new Car { CarId = 3, BrandId = 1, ColorId = 4, DailyPrice = 40000, ModelYear = "2021", Description = "Turbo Benzinli" });
+
+			AllBrands(brandManager);
+
+			AllCars(carManager, brandManager, colorManager);
+
+			FilterPrice(carManager, brandManager, colorManager);
+
+			FilterColor(carManager, brandManager, colorManager);
+
+			FilterBrand(carManager, brandManager, colorManager);
+
+			//InMemory();
+		}
+
+		private static void FilterBrand(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
+		{
+			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Brand[Audi]\n");
+			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+			foreach (Car car in carManager.GetAllByBrandId(1))
+			{
+				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+					car.CarId,
+					brandManager.GetById(car.BrandId).BrandName,
+					colorManager.GetById(car.ColorId).ColorName,
+					car.ModelYear,
+					car.DailyPrice,
+					car.Description);
 			}
+		}
 
-			//carManager.Add(new Car { CarId = 1, BrandId = 1, ColorId = 5, DailyPrice = 20000, ModelYear = "2018", Description = "Benzinli" });
+		private static void FilterColor(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
+		{
+			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Color[Yeşil]\n");
+			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+			foreach (Car car in carManager.GetAllByColorId(5))
+			{
+				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+					car.CarId,
+					brandManager.GetById(car.BrandId).BrandName,
+					colorManager.GetById(car.ColorId).ColorName,
+					car.ModelYear,
+					car.DailyPrice,
+					car.Description);
+			}
+		}
 
-			Console.WriteLine("---Rent A Car--- \n\t\t\t Tüm Markalar\n");
+		private static void FilterPrice(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
+		{
+			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Price[10000-15000]\n");
+			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+			foreach (Car car in carManager.GetByDailyPrice(10000, 15000))
+			{
+				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+					car.CarId,
+					brandManager.GetById(car.BrandId).BrandName,
+					colorManager.GetById(car.ColorId).ColorName,
+					car.ModelYear,
+					car.DailyPrice,
+					car.Description);
+			}
+		}
+
+		private static void AllBrands(BrandManager brandManager)
+		{
+			Console.WriteLine("---Rent A Car--- \t\t Tüm Markalar\n");
 			Console.WriteLine("Brand Id\tBrand Name");
 			Console.WriteLine("--------\t----------");
-			foreach (Brand brand in brandManager.GetAll())
+			foreach (Brand brand in brandManager.GetAll().OrderBy(b=>b.BrandName))
 			{
 				Console.WriteLine("{0}\t\t{1}", brand.BrandId, brand.BrandName);
 			}
+		}
 
-
-			//InMemory();
+		private static void AllCars(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
+		{
+			Console.WriteLine("\n---Rent A Car--- \t\t Tüm Araçlar\n");
+			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+			foreach (Car car in carManager.GetAll().OrderBy(c=>c.DailyPrice))
+			{
+				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+					car.CarId,
+					brandManager.GetById(car.BrandId).BrandName,
+					colorManager.GetById(car.ColorId).ColorName,
+					car.ModelYear,
+					car.DailyPrice,
+					car.Description);
+			}
 		}
 
 		private static void InMemory()
