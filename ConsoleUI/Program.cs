@@ -43,7 +43,7 @@ namespace ConsoleUI
 			{
 				carManager.Add(car);
 			}*/
-			//carManager.Update(new Car { CarId = 3, BrandId = 1, ColorId = 4, DailyPrice = 40000, ModelYear = "2021", Description = "Turbo Benzinli" });
+			//carManager.Update(new Car { CarId = 3, BrandId = 1, ColorId = 4, DailyPrice = 40001, ModelYear = "2021", Description = "Turbo Benzinli" });
 
 			AllCarDetailDto(carManager);
 
@@ -62,95 +62,143 @@ namespace ConsoleUI
 
 		private static void AllCarDetailDto(CarManager carManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Tüm Araçlar\n");
-			Console.WriteLine("Car Id\tBrand\t\tColor\t\tPrice");
-			Console.WriteLine("------\t-----\t\t-----\t\t-----");
-			foreach (CarDetailDto car in carManager.GetCarDetails())
+			var result = carManager.GetCarDetails();
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t{1}\t{2}\t{3}",
-					car.CarId,
-					car.BrandName,
-					car.ColorName,
-					car.DailyPrice);
+				Console.WriteLine("\n---Rent A Car--- \t\t Tüm Araçlar\n");
+				Console.WriteLine("Car Id\tBrand\t\tColor\t\tPrice");
+				Console.WriteLine("------\t-----\t\t-----\t\t-----");
+				foreach (CarDetailDto car in result.Data)
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}",
+						car.CarId,
+						car.BrandName,
+						car.ColorName,
+						car.DailyPrice);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
 		private static void FilterBrand(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Brand[Audi]\n");
-			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
-			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
-			foreach (Car car in carManager.GetAllByBrandId(1))
+			var result = carManager.GetAllByBrandId(1);
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
-					car.CarId,
-					brandManager.GetById(car.BrandId).BrandName,
-					colorManager.GetById(car.ColorId).ColorName,
-					car.ModelYear,
-					car.DailyPrice,
-					car.Description);
+				Console.WriteLine("\n---Rent A Car--- \t\t Filter: Brand[Audi]\n");
+				Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+				Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+				foreach (Car car in result.Data)
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+						car.CarId,
+						brandManager.GetById(car.BrandId).Data.BrandName,
+						colorManager.GetById(car.ColorId).Data.ColorName,
+						car.ModelYear,
+						car.DailyPrice,
+						car.Description);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
 		private static void FilterColor(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Color[Yeşil]\n");
-			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
-			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
-			foreach (Car car in carManager.GetAllByColorId(5))
+			var result = carManager.GetAllByColorId(5);
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
-					car.CarId,
-					brandManager.GetById(car.BrandId).BrandName,
-					colorManager.GetById(car.ColorId).ColorName,
-					car.ModelYear,
-					car.DailyPrice,
-					car.Description);
+				Console.WriteLine("\n---Rent A Car--- \t\t Filter: Color[Yeşil]\n");
+				Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+				Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+				foreach (Car car in result.Data)
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+						car.CarId,
+						brandManager.GetById(car.BrandId).Data.BrandName,
+						colorManager.GetById(car.ColorId).Data.ColorName,
+						car.ModelYear,
+						car.DailyPrice,
+						car.Description);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
 		private static void FilterPrice(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Filter: Price[10000-15000]\n");
-			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
-			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
-			foreach (Car car in carManager.GetByDailyPrice(10000, 15000))
+			var result = carManager.GetByDailyPrice(10000, 15000);
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
-					car.CarId,
-					brandManager.GetById(car.BrandId).BrandName,
-					colorManager.GetById(car.ColorId).ColorName,
-					car.ModelYear,
-					car.DailyPrice,
-					car.Description);
+				Console.WriteLine("\n---Rent A Car--- \t\t Filter: Price[10000-15000]\n");
+				Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+				Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+				foreach (Car car in result.Data)
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+						car.CarId,
+						brandManager.GetById(car.BrandId).Data.BrandName,
+						colorManager.GetById(car.ColorId).Data.ColorName,
+						car.ModelYear,
+						car.DailyPrice,
+						car.Description);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
 		private static void AllBrands(BrandManager brandManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Tüm Markalar\n");
-			Console.WriteLine("Brand Id\tBrand Name");
-			Console.WriteLine("--------\t----------");
-			foreach (Brand brand in brandManager.GetAll().OrderBy(b=>b.BrandName))
+			var result = brandManager.GetAll();
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t\t{1}", brand.BrandId, brand.BrandName);
+				Console.WriteLine("\n---Rent A Car--- \t\t Tüm Markalar\n");
+				Console.WriteLine("Brand Id\tBrand Name");
+				Console.WriteLine("--------\t----------");
+				foreach (Brand brand in result.Data.OrderBy(b => b.BrandName))
+				{
+					Console.WriteLine("{0}\t\t{1}", brand.BrandId, brand.BrandName);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
 		private static void AllCars(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
 		{
-			Console.WriteLine("\n---Rent A Car--- \t\t Tüm Araçlar\n");
-			Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
-			Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
-			foreach (Car car in carManager.GetAll().OrderBy(c=>c.DailyPrice))
+			var result = carManager.GetAll();
+			if (result.Success==true)
 			{
-				Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
-					car.CarId,
-					brandManager.GetById(car.BrandId).BrandName,
-					colorManager.GetById(car.ColorId).ColorName,
-					car.ModelYear,
-					car.DailyPrice,
-					car.Description);
+				Console.WriteLine("\n---Rent A Car--- \t\t Tüm Araçlar\n");
+				Console.WriteLine("Car Id\tBrand\t\tColor\t\tModel\t\tPrice\tDescription");
+				Console.WriteLine("------\t-----\t\t-----\t\t-----\t\t-----\t-----------");
+				foreach (Car car in result.Data.OrderBy(c => c.DailyPrice))
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+						car.CarId,
+						brandManager.GetById(car.BrandId).Data.BrandName,
+						colorManager.GetById(car.ColorId).Data.ColorName,
+						car.ModelYear,
+						car.DailyPrice,
+						car.Description);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
 			}
 		}
 
@@ -168,7 +216,7 @@ namespace ConsoleUI
 			});
 
 			CarManager carManager = new CarManager(inMemoryCarDal);
-			foreach (var car in carManager.GetAll())
+			foreach (var car in carManager.GetAll().Data)
 			{
 				Console.WriteLine(car.BrandId + " " + car.Description + " " + car.DailyPrice);
 			}

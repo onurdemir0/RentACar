@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,72 +20,69 @@ namespace Business.Concrete
 			_carDal = carDal;
 		}
 
-		public void Add(Car car)
+		public IResult Add(Car car)
 		{
-			if (car.DailyPrice>0)
+			if (car.DailyPrice<=0)
 			{
-				_carDal.Add(car);
-				Console.WriteLine("Araç başarıyla eklendi!");
+				return new ErrorResult(Messages.CarPriceInvalid);
 			}
-			else
-			{
-				Console.WriteLine("Araç fiyatı 0'dan büyük olmalıdır. Girilen Değer: {0}",car.DailyPrice);
-			}
+			_carDal.Add(car);
+			return new SuccessResult(Messages.CarAdded);
 		}
 
-		public void Delete(Car car)
+		public IResult Delete(Car car) 
 		{
 			_carDal.Delete(car);
-			Console.WriteLine("{0} No'lu Araç Silindi", car.CarId);
+			return new SuccessResult(Messages.CarDeleted);
 		}
 
-		public List<Car> GetAll()
+		public IDataResult<List<Car>> GetAll()
 		{
-			return _carDal.GetAll();
-		}
-
-		public List<Car> GetAllByBrandId(int brandId)
-		{
-			return _carDal.GetAll(c => c.BrandId == brandId);
-		}
-
-		public List<Car> GetAllByColorId(int colorId)
-		{
-			return _carDal.GetAll(c => c.ColorId == colorId);
-		}
-
-		public List<Car> GetByDailyPrice(decimal min, decimal max)
-		{
-			return _carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max);
-		}
-
-		public Car GetById(int CarId)
-		{
-			return _carDal.Get(c => c.CarId == CarId);
-		}
-
-		public List<Car> GetByModelYear(string modelYear)
-		{
-			return _carDal.GetAll(c => c.ModelYear == modelYear);
-		}
-
-		public List<CarDetailDto> GetCarDetails()
-		{
-			return _carDal.GetCarDetails();
-		}
-
-		public void Update(Car car)
-		{
-			if (car.DailyPrice>0)
+			if (DateTime.Now.Hour==22)
 			{
-				_carDal.Update(car);
-				Console.WriteLine("{0} No'lu Araç Güncellendi!", car.CarId);
+				return new ErrorDataResult<List<Car>>(Messages.MaintenanTime);
 			}
-			else
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
+		}
+
+		public IDataResult<List<Car>> GetAllByBrandId(int brandId)
+		{
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId),Messages.CarsListed);
+		}
+
+		public IDataResult<List<Car>> GetAllByColorId(int colorId)
+		{
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId),Messages.CarsListed);
+		}
+
+		public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
+		{
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max), Messages.CarsListed);
+		}
+
+		public IDataResult<Car> GetById(int CarId)
+		{
+			return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == CarId), Messages.CarsListed);
+		}
+
+		public IDataResult<List<Car>> GetByModelYear(string modelYear)
+		{
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ModelYear == modelYear), Messages.CarsListed);
+		}
+
+		public IDataResult<List<CarDetailDto>> GetCarDetails()
+		{
+			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListed);
+		}
+
+		public IResult Update(Car car)
+		{
+			if (car.DailyPrice<=0)
 			{
-				Console.WriteLine("Araç günlük fiyatı 0'dan büyük olmalıdır!!");
+				return new ErrorResult(Messages.CarPriceInvalid);
 			}
-			
+			_carDal.Update(car);
+			return new SuccessResult(Messages.CarUpdated);
 		}
 	}
 }
