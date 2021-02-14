@@ -19,3 +19,28 @@ CREATE TABLE [dbo].[Colors] (
     [ColorName] NCHAR (10) NULL,
     PRIMARY KEY CLUSTERED ([ColorId] ASC)
 );
+CREATE TABLE [dbo].[Users]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [FirstName] NCHAR(10) NULL, 
+    [LastName] NCHAR(10) NULL, 
+    [Email] NCHAR(20) NULL, 
+    [Password] NCHAR(15) NULL
+);
+CREATE TABLE [dbo].[Customers]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [UserId] INT NULL, 
+    [CompanyName] NCHAR(15) NULL, 
+    CONSTRAINT [FK_Customers_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]) 
+);
+CREATE TABLE [dbo].[Rentals]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [CarId] INT NULL, 
+    [CustomerId] INT NULL, 
+    [RentDate] DATETIME NULL, 
+    [ReturnDate] DATETIME NOT NULL, 
+    CONSTRAINT [FK_Rentals_Cars] FOREIGN KEY ([CarId]) REFERENCES [Cars]([CarId]), 
+    CONSTRAINT [FK_Rentals_Customers] FOREIGN KEY ([CustomerId]) REFERENCES [Customers]([Id])
+)

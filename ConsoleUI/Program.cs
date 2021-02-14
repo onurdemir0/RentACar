@@ -16,21 +16,126 @@ namespace ConsoleUI
 			CarManager carManager = new CarManager(new EfCarDal());
 			BrandManager brandManager = new BrandManager(new EfBrandDal());
 			ColorManager colorManager = new ColorManager(new EfColorDal());
+			UserManager userManager = new UserManager(new EfUserDal());
+			CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+			RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-			//brandManager.Add(new Brand { BrandId = 7, BrandName = "O" });
-			/*List<Color> colors = new List<Color> 
+			//ColorAdd(colorManager);
+			//CarAdd(carManager);
+			//carManager.Update(new Car { CarId = 3, BrandId = 1, ColorId = 4, DailyPrice = 40001, ModelYear = "2021", Description = "Turbo Benzinli" });
+			//UserAdd(userManager);
+			//CustomerAdd(customerManager);
+			//RentAdd(rentalManager);
+
+			rentalManager.Add(new Rental { CarId = 5, CustomerId = 4, RentDate = new DateTime(2020, 04, 15) });
+
+
+			//AllRentDetailDto(rentalManager);
+
+			//AllCarDetailDto(carManager);
+
+			//AllBrands(brandManager);
+
+			//AllCars(carManager, brandManager, colorManager);
+
+			//FilterPrice(carManager, brandManager, colorManager);
+
+			//FilterColor(carManager, brandManager, colorManager);
+
+			//FilterBrand(carManager, brandManager, colorManager);
+
+			//InMemory();
+		}
+
+		private static void AllRentDetailDto(RentalManager rentalManager)
+		{
+			var result = rentalManager.GetAllRent();
+			if (result.Success == true)
+			{
+				Console.WriteLine("\n---Rent A Car--- \t\t Tüm Kiralamalar\n");
+				Console.WriteLine("Id\tBrand\t\tCompany\t\tName\t\tSurName\t\tPrice\t\tRentDate\t\tReturnDate");
+				Console.WriteLine("--\t-----\t\t-------\t\t----\t\t-------\t\t-----\t\t--------\t\t----------");
+				foreach (RentalDetailDto rent in result.Data)
+				{
+					Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}\t{7}",
+						rent.Id,
+						rent.BrandName,
+						rent.CompanyName,
+						rent.FirstName,
+						rent.LastName,
+						rent.DailyPrice,
+						rent.RentDate,
+						rent.ReturnDate);
+				}
+			}
+			else
+			{
+				Console.WriteLine(result.Message);
+			}
+		}
+
+		private static void RentAdd(RentalManager rentalManager)
+		{
+			List<Rental> rentals = new List<Rental>
+			{
+				new Rental { CarId=5,CustomerId=1,RentDate=new DateTime(2020,04,15) },
+				new Rental { CarId=3,CustomerId=5,RentDate=new DateTime(2020,06,22) },
+				new Rental { CarId=4,CustomerId=2,RentDate=new DateTime(2020,08,17) }
+			};
+			foreach (Rental rental in rentals)
+			{
+				rentalManager.Add(rental);
+			}
+		}
+
+		private static void CustomerAdd(CustomerManager customerManager)
+		{
+			List<Customer> customers = new List<Customer>
+			{
+				new Customer { UserId=2,CompanyName="Turkcell" },
+				new Customer { UserId=5,CompanyName="Tesla" },
+				new Customer { UserId=1,CompanyName="Apple"},
+				new Customer { UserId=4,CompanyName="Google" }
+			};
+			foreach (Customer customer in customers)
+			{
+				customerManager.Add(customer);
+			}
+		}
+
+		private static void UserAdd(UserManager userManager)
+		{
+			List<User> users = new List<User>
+			{
+				new User { FirstName="Leyla",LastName="Gün",Email="agdf4yh@gmail.com",Password="asg5hy4th" },
+				new User { FirstName="Sıla",LastName="Demir",Email="nnngsa@gmail.com",Password="bvmtyj4" },
+				new User { FirstName="Kaan",LastName="Çelik",Email="asanjk@gmail.com",Password="kşrtdb"},
+				new User { FirstName="Ali",LastName="Sevgi",Email="gg555dd@gmail.com",Password="3rasfdsgs" }
+			};
+			foreach (User user in users)
+			{
+				userManager.Add(user);
+			}
+		}
+
+		private static void ColorAdd(ColorManager colorManager)
+		{
+			List<Color> colors = new List<Color>
 			{
 				new Color { ColorId = 1, ColorName = "Siyah" },
 				new Color { ColorId = 2, ColorName = "Beyaz" },
 				new Color { ColorId = 3, ColorName = "Kırmızı" },
 				new Color { ColorId = 4, ColorName = "Mor" },
-				new Color { ColorId = 5, ColorName = "Yeşil" } 
+				new Color { ColorId = 5, ColorName = "Yeşil" }
 			};
 			foreach (Color color in colors)
 			{
 				colorManager.Add(color);
 			}
+		}
 
+		private static void CarAdd(CarManager carManager)
+		{
 			List<Car> cars = new List<Car>
 			{
 				new Car {CarId=2,BrandId=3,ColorId=1,DailyPrice=10000,ModelYear="2010",Description="Dizel"},
@@ -42,22 +147,7 @@ namespace ConsoleUI
 			foreach (Car car in cars)
 			{
 				carManager.Add(car);
-			}*/
-			//carManager.Update(new Car { CarId = 3, BrandId = 1, ColorId = 4, DailyPrice = 40001, ModelYear = "2021", Description = "Turbo Benzinli" });
-
-			AllCarDetailDto(carManager);
-
-			AllBrands(brandManager);
-
-			AllCars(carManager, brandManager, colorManager);
-
-			FilterPrice(carManager, brandManager, colorManager);
-
-			FilterColor(carManager, brandManager, colorManager);
-
-			FilterBrand(carManager, brandManager, colorManager);
-
-			//InMemory();
+			}
 		}
 
 		private static void AllCarDetailDto(CarManager carManager)
