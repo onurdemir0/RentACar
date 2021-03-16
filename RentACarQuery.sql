@@ -19,13 +19,15 @@ CREATE TABLE [dbo].[Colors] (
     [ColorName] NCHAR (10) NULL,
     PRIMARY KEY CLUSTERED ([ColorId] ASC)
 );
-CREATE TABLE [dbo].[Users]
-(
-	[Id] INT NOT NULL PRIMARY KEY, 
-    [FirstName] NCHAR(10) NULL, 
-    [LastName] NCHAR(10) NULL, 
-    [Email] NCHAR(20) NULL, 
-    [Password] NCHAR(15) NULL
+CREATE TABLE [dbo].[Users] (
+    [Id]        INT        IDENTITY (1, 1) NOT NULL,
+    [FirstName] VARCHAR(50) NOT NULL,
+    [LastName]  VARCHAR(50) NOT NULL,
+    [Email]     VARCHAR(50) NOT NULL,
+    [PasswordHash]  VARBINARY(500) NOT NULL,
+    [PasswordSalt] VARBINARY(500) NOT NULL, 
+    [Status] BIT NOT NULL, 
+    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 CREATE TABLE [dbo].[Customers]
 (
@@ -52,3 +54,14 @@ CREATE TABLE [dbo].[CarImages] (
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_CarImages_Cars] FOREIGN KEY ([CarId]) REFERENCES [dbo].[Cars] ([CarId])
 );
+CREATE TABLE [dbo].[OperationClaims]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Name] VARCHAR(250) NOT NULL
+);
+CREATE TABLE [dbo].[UserOperationClaims]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [UserId] INT NOT NULL, 
+    [OperationClaim] INT NOT NULL
+) 
