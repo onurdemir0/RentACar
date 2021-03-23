@@ -80,6 +80,8 @@ namespace WebAPI
 				app.UseDeveloperExceptionPage();
 			}
 
+			app.ConfigureCustomExceptionMiddleware();
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
