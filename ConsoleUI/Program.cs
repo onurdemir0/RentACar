@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using Core.Entities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -107,10 +108,10 @@ namespace ConsoleUI
 		{
 			List<User> users = new List<User>
 			{
-				new User { FirstName="Leyla",LastName="Gün",Email="agdf4yh@gmail.com",Password="asg5hy4th" },
-				new User { FirstName="Sıla",LastName="Demir",Email="nnngsa@gmail.com",Password="bvmtyj4" },
-				new User { FirstName="Kaan",LastName="Çelik",Email="asanjk@gmail.com",Password="kşrtdb"},
-				new User { FirstName="Ali",LastName="Sevgi",Email="gg555dd@gmail.com",Password="3rasfdsgs" }
+				new User { FirstName="Leyla",LastName="Gün",Email="agdf4yh@gmail.com"},
+				new User { FirstName="Sıla",LastName="Demir",Email="nnngsa@gmail.com"},
+				new User { FirstName="Kaan",LastName="Çelik",Email="asanjk@gmail.com"},
+				new User { FirstName="Ali",LastName="Sevgi",Email="gg555dd@gmail.com"}
 			};
 			foreach (User user in users)
 			{
