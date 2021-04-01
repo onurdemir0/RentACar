@@ -64,4 +64,13 @@ CREATE TABLE [dbo].[UserOperationClaims]
 	[Id] INT NOT NULL PRIMARY KEY, 
     [UserId] INT NOT NULL, 
     [OperationClaim] INT NOT NULL
-) 
+);
+CREATE TABLE [dbo].[FakeCards]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [NameOnTheCard] VARCHAR(50) NOT NULL, 
+    [CardNumber] VARCHAR(50) NOT NULL, 
+    [CardCvv] VARCHAR(50) NOT NULL, 
+    [ExpirationDate] VARCHAR(50) NOT NULL, 
+    [MoneyInTheCard] DECIMAL NOT NULL
+)
