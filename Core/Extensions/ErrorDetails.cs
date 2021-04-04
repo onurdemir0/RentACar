@@ -14,6 +14,7 @@ namespace Core.Extensions
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
+
         }
     }
 }

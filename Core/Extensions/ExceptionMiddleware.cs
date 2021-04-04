@@ -47,8 +47,9 @@ namespace Core.Extensions
                 {
                     StatusCode = 400,
                     Message = message,
-                    Errors = error
+                    ValidationErrors = error
                 }.ToString());
+
             }
 
             return httpContext.Response.WriteAsync(new ErrorDetails
